@@ -1,0 +1,47 @@
+local bloque = script.Parent -- Asegúrate de que el script sea hijo del bloque interactivo
+
+-- Función para mostrar el cuadro de contraseña
+local function mostrarCuadroDeContraseña(jugador)
+    local pantalla = jugador:WaitForChild("PlayerGui"):FindFirstChild("PantallaContraseña")
+    
+    if not pantalla then
+        pantalla = Instance.new("ScreenGui")
+        pantalla.Name = "PantallaContraseña"
+        pantalla.Parent = jugador.PlayerGui
+        
+        local cuadroDeContraseña = Instance.new("TextBox")
+        cuadroDeContraseña.Size = UDim2.new(0, 200, 0, 50)
+        cuadroDeContraseña.Position = UDim2.new(0.5, -100, 0.5, -25)
+        cuadroDeContraseña.Text = ""
+        cuadroDeContraseña.PlaceholderText = "Ingresa la contraseña"
+        cuadroDeContraseña.TextColor3 = Color3.fromRGB(255, 255, 255)
+        cuadroDeContraseña.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        cuadroDeContraseña.Parent = pantalla
+        
+        -- Restringir el movimiento del jugador
+        jugador.Character.HumanoidRootPart.Anchored = true
+        
+        cuadroDeContraseña.FocusLost:Connect(function(enterPressed)
+            if enterPressed then
+                if cuadroDeContraseña.Text == "contraseñaCorrecta" then -- Reemplaza 'contraseñaCorrecta' con la contraseña real
+                    -- Quitar el cuadro y permitir movimiento
+                    pantalla:Destroy()
+                    jugador.Character.HumanoidRootPart.Anchored = false
+                else
+                    cuadroDeContraseña.Text = ""
+                    cuadroDeContraseña.PlaceholderText = "Contraseña incorrecta, intenta nuevamente"
+                end
+            end
+        end)
+    end
+    
+    pantalla.Enabled = true
+end
+
+-- Detectar cuando un jugador se para sobre el bloque
+bloque.Touched:Connect(function(hit)
+    local jugador = game.Players:GetPlayerFromCharacter(hit.Parent)
+    if jugador then
+        mostrarCuadroDeContraseña(jugador)
+    end
+end)

@@ -1,0 +1,46 @@
+local bloque = script.Parent -- Asegúrate de que el script sea hijo del bloque interactivo
+
+-- Función para mostrar el texto
+local function mostrarTexto(jugador)
+    local pantalla = jugador:WaitForChild("PlayerGui"):FindFirstChild("PantallaTexto")
+    
+    if not pantalla then
+        pantalla = Instance.new("ScreenGui")
+        pantalla.Name = "PantallaTexto"
+        pantalla.Parent = jugador.PlayerGui
+        
+        local etiquetaTexto = Instance.new("TextLabel")
+        etiquetaTexto.Size = UDim2.new(0, 200, 0, 50)
+        etiquetaTexto.Position = UDim2.new(0.5, -100, 0.5, -25)
+        etiquetaTexto.Text = "EJEMPLO"
+        etiquetaTexto.TextColor3 = Color3.fromRGB(255, 255, 255) -- Ajusta el color del texto aquí
+        etiquetaTexto.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Ajusta el color de fondo aquí
+        etiquetaTexto.Parent = pantalla
+    end
+    
+    pantalla.Enabled = true
+end
+
+-- Función para ocultar el texto
+local function ocultarTexto(jugador)
+    local pantalla = jugador.PlayerGui:FindFirstChild("PantallaTexto")
+    if pantalla then
+        pantalla.Enabled = false
+    end
+end
+
+-- Detectar cuando un jugador se para sobre el bloque
+bloque.Touched:Connect(function(hit)
+    local jugador = game.Players:GetPlayerFromCharacter(hit.Parent)
+    if jugador then
+        mostrarTexto(jugador)
+    end
+end)
+
+-- Detectar cuando un jugador se aleja del bloque
+bloque.TouchEnded:Connect(function(hit)
+    local jugador = game.Players:GetPlayerFromCharacter(hit.Parent)
+    if jugador then
+        ocultarTexto(jugador)
+    end
+end)

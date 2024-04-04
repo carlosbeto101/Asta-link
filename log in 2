@@ -1,0 +1,16 @@
+local pantallaDeContraseña = game.StarterGui.ScreenGui.Frame -- Asegúrate de ajustar esta ruta a tu GUI específica
+local contraseñaCorrecta = "tuContraseñaAqui" -- Cambia esto por tu contraseña
+
+-- Verificar la contraseña
+pantallaDeContraseña.TextButton.MouseButton1Click:Connect(function()
+    if pantallaDeContraseña.TextBox.Text == contraseñaCorrecta then
+        -- Permitir movimiento si la contraseña es correcta
+        pantallaDeContraseña.Visible = false
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16 -- Ajusta a la velocidad normal de caminata
+    else
+        pantallaDeContraseña.TextBox.Text = "Contraseña incorrecta, intenta de nuevo"
+    end
+end)
+
+-- Deshabilitar movimiento inicialmente
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 0
